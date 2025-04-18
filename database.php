@@ -20,16 +20,16 @@ class Dbh {
             $this->conn = new PDO($dsn, $this->username, $this->password);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             return $this->conn;
-            echo "✅ Connected successfully<br>";
+            echo "Connected successfully<br>";
         } catch (PDOException $e) {
-            echo "❌ Connection failed: " . $e->getMessage();
+            echo "Connection failed: " . $e->getMessage();
             exit;
         }
     }
 
     public function select($query, $params = []) {
         if ($this->conn === null) {
-            echo "❌ ERROR: \$this->conn is null<br>";
+            echo "ERROR: \$this->conn is null<br>";
             exit;
         }
 
@@ -43,6 +43,7 @@ class Dbh {
         }
     }
 
+    //todo- check if i need to ignore item which is already exists in the table
     public function insert($table, $data) {
         $columns = implode(", ", array_keys($data));
         $placeholders = implode(", ", array_map(fn($k) => ":$k", array_keys($data)));
@@ -52,6 +53,7 @@ class Dbh {
         return $stmt->execute($data);
     }
 
+    //todo- throw exception if the item is not exists in the table
     public function update($table, $data, $where) {
         $set = implode(", ", array_map(fn($k) => "$k = :$k", array_keys($data)));
         $query = "UPDATE $table SET $set WHERE $where";
@@ -59,6 +61,7 @@ class Dbh {
         return $stmt->execute($data);
     }
 
+    //todo- throw exception if the item is not exists in the table
     public function delete($table, $where, $params = []) {
         $query = "DELETE FROM $table WHERE $where";
         $stmt = $this->conn->prepare($query);
