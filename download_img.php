@@ -1,10 +1,11 @@
 <?php
 
+
 // Image URL
 $imageUrl = 'https://cdn2.vectorstock.com/i/1000x1000/23/81/default-avatar-profile-icon-vector-18942381.jpg';
 
 // Filename and open for writing
-$filename = 'images/image' . time() . '.jpg';
+$filename = 'images/image.jpg';
 $fp = fopen($filename, 'w+');
 
 if ($fp === false) {
