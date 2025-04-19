@@ -5,6 +5,7 @@ require_once 'database.php';
 $db = new Dbh();
 $conn = $db->connect();
 
+// Create the users table
 try {
     $sqlUsers = "
         CREATE TABLE IF NOT EXISTS users (
@@ -19,6 +20,8 @@ try {
     $conn->exec($sqlUsers);
     echo "Table 'users' created successfully.<br>";
 
+
+    // Create the posts table
     $sqlPosts = "
         CREATE TABLE IF NOT EXISTS posts (
             id INT PRIMARY KEY,

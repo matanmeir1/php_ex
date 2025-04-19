@@ -1,18 +1,9 @@
 <?php
-require_once 'database.php';
 
-$db = new Dbh();
+require_once 'classes/Post.php';
 
-$results = $db->select("
-    SELECT 
-        DATE(created_at) AS post_date,
-        HOUR(created_at) AS post_hour,
-        COUNT(*) AS post_count
-    FROM posts
-    WHERE is_active = 1
-    GROUP BY post_date, post_hour
-    ORDER BY post_date DESC, post_hour DESC
-");
+// The method to fetch the data
+$results = Post::getGroupedByHour();
 ?>
 
 <!DOCTYPE html>

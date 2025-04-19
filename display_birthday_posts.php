@@ -1,36 +1,10 @@
 <?php
 
-require_once 'database.php';
+require_once 'classes/Post.php';
 
-$db = new Dbh();
+// The method to fetch the data
+$results = Post::getBirthdayFeed();
 
-//The SQL query to fetch the data
-$results = $db->select("
-    SELECT 
-    posts.id,
-    posts.user_id,
-    posts.title,
-    posts.body,
-    posts.created_at,
-    posts.is_active,
-    users.name,
-    users.email,
-    users.birth_date
-FROM posts
-JOIN users ON users.id = posts.user_id
-WHERE MONTH(users.birth_date) = MONTH(CURDATE())
-  AND posts.created_at =
-  (
-      SELECT MAX(created_at)
-      FROM posts
-      WHERE posts.user_id = users.id
-        AND posts.is_active = 1
-  )
-  AND users.is_active = 1
-  AND posts.is_active = 1
-ORDER BY posts.created_at DESC;
-
-");
 
 ?>
 

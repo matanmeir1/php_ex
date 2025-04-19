@@ -6,7 +6,7 @@ $db = new Dbh();
 echo "<h2>--- START TESTING DB ---</h2>";
 
 //
-// 1. SELECT בסיסי
+// 1. SELECT All
 //
 echo "<h3>1. SELECT * FROM users</h3>";
 $users = $db->select("SELECT * FROM users");
@@ -15,7 +15,7 @@ foreach ($users as $user) {
 }
 
 // //
-// // 2. INSERT משתמש חדש
+// // 2. INSERT 
 // //
 // echo "<h3>2. INSERT NEW USER</h3>";
 // $newUser = 'user_' . rand(100, 999);
@@ -28,21 +28,21 @@ foreach ($users as $user) {
 // echo "Inserted new user: $newUser<br>";
 
 // //
-// // 3. SELECT עם WHERE
+// // 3. SELECT WHERE
 // //
 // echo "<h3>3. SELECT WHERE user = '$newUser'</h3>";
 // $result = $db->select("SELECT * FROM users WHERE user = :user", ['user' => $newUser]);
 // print_r($result);
 
 // //
-// // 4. UPDATE שם משתמש
+// // 4. UPDATE USER
 // //
 // echo "<h3>4. UPDATE user → {$newUser}_updated</h3>";
 // $db->update('users', ['user' => $newUser . '_updated'], "user = '$newUser'");
 // echo "Updated username<br>";
 
 //
-// 5. DELETE משתמש
+// 5. DELETE User
 //
 echo "<h3>5. DELETE user</h3>";
 $usernameToDelete = 'matan';
@@ -50,7 +50,7 @@ $deleted = $db->delete("users", "user = :username", ['username' => $usernameToDe
 echo "Deleted user<br>";
 
 // //
-// // 6. SELECT עם ORDER BY
+// // 6. SELECT ORDER BY
 // //
 // echo "<h3>6. SELECT ORDER BY id DESC</h3>";
 // $ordered = $db->select("SELECT * FROM users ORDER BY id DESC LIMIT 5");

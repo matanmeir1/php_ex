@@ -51,6 +51,7 @@ class Dbh {
 
     //INSERT
     //todo- check if i need to ignore item which is already exists in the table
+    //todo- check if the cols and placeholders are exists in the table
     public function insert($table, $data) {
         $columns = implode(", ", array_keys($data));
         $placeholders = implode(", ", array_map(fn($k) => ":$k", array_keys($data)));
@@ -71,9 +72,14 @@ class Dbh {
 
     //DELETE
     //todo- throw exception if the item is not exists in the table
+    //todo- check if the where exist and not null
     public function delete($table, $where, $params = []) {
         $query = "DELETE FROM $table WHERE $where";
         $stmt = $this->conn->prepare($query);
         return $stmt->execute($params);
     }
+
+
+
+    // todo - write to log func
 }

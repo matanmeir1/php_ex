@@ -1,24 +1,9 @@
 <?php
 
-require_once 'database.php';
+require_once 'classes/User.php';
+require_once 'classes/Post.php';
 
-$db = new Dbh();
-
-//The SQL query to fetch the data
-$results = $db->select("
-    SELECT 
-        users.id AS user_id,
-        users.name AS user_name,
-        users.email,
-        posts.id AS post_id,
-        posts.title,
-        posts.body,
-        posts.created_at
-    FROM users
-    JOIN posts ON users.id = posts.user_id
-    WHERE users.is_active = 1 AND posts.is_active = 1
-    ORDER BY users.id, posts.created_at DESC
-");
+$users = User::getAllWithPosts();
 
 ?>
 
@@ -46,19 +31,20 @@ $currentUser = null;
 
 // Loop through the results and display them
 // Group posts by user
-foreach ($results as $row) {
-    if ($currentUser !== $row['user_id']) {
-        if ($currentUser !== null) echo "</div>"; // Close previous user div
-        $currentUser = $row['user_id'];
-        echo "<div class='user'>";
-        echo "<img src='images/image.jpg' class='image' alt='image'> ";
-        echo "<strong>{$row['user_name']}</strong> ({$row['email']})<br>";
+foreach ($users as $user) 
+{
+    echo "<div class='user'>";
+    echo "<img src='images/image.jpg' class='image' alt='image'> ";
+    echo "<strong>{$user->name}</strong> ({$user->email})<br>";
+
+    foreach ($user->posts as $post) {
+        echo "<div class='post'>";
+        echo "<div class='title'>{$post->title}</div>";
+        echo "<div class='date'>{$post->created_at}</div>";
+        echo "<p>{$post->body}</p>";
+        echo "</div>";
     }
 
-    echo "<div class='post'>";
-    echo "<div class='title'>{$row['title']}</div>";
-    echo "<div class='date'>{$row['created_at']}</div>";
-    echo "<p>{$row['body']}</p>";
     echo "</div>";
 }
 

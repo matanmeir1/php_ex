@@ -1,35 +1,49 @@
+
+
 <?php
 
-require_once 'database.php';
+require_once 'classes/User.php';
 
-$db = new Dbh();
-$conn = $db->connect();
+function getApiData($url) {
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // אם יש הפניות
+    $result = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
 
-// Get the data from the API, turn in into strings array
+    if ($httpCode !== 200 || !$result) {
+        return false;
+    }
+
+    return $result;
+}
+
 $url = "https://jsonplaceholder.typicode.com/users";
-$json = file_get_contents($url);
+$json = getApiData($url);
 $users = json_decode($json, true);
 
+
+// Check if the API call was successful
 if (!$users) {
     echo "Failed to fetch users";
     exit;
 }
 
-// Insert the data into the database
-foreach ($users as $user) 
-{
-    $data = [
+// Loop and insert
+foreach ($users as $user) {
+    $userObj = new User([
         'id' => $user['id'],
         'name' => $user['name'],
         'email' => $user['email'],
-        'is_active' => 1,
-        'birth_date' => date('Y-m-d', strtotime('-' . rand(20, 40) . ' years')) // Random birthday for question 6
-    ];
+        'birth_date' => date('Y-m-d', strtotime('-' . rand(20, 40) . ' years')),
+        'is_active' => 1
+    ]);
 
     try {
-        $db->insert("users", $data);
-        echo "Inserted user: {$user['name']}<br>";
+        $userObj->save();
+        echo "Inserted user: {$userObj->name}<br>";
     } catch (Exception $e) {
-        echo "Failed to insert user {$user['name']}: " . $e->getMessage() . "<br>";
+        echo "Failed to insert user {$userObj->name}: " . $e->getMessage() . "<br>";
     }
 }
