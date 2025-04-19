@@ -8,13 +8,17 @@ class Dbh {
     private $charset = "utf8";
     private $conn;
 
+
+    // Constructor
     public function __construct() {
-        echo "Running constructor...<br>";
+        //echo "Running constructor...<br>";
         $this->connect();
     }
 
+
+    // Connect to the database
     public function connect() {
-        echo "Trying to connect...<br>";
+        //echo "Trying to connect...<br>";
         try {
             $dsn = "mysql:host={$this->servername};dbname={$this->dbname};charset={$this->charset}";
             $this->conn = new PDO($dsn, $this->username, $this->password);
@@ -27,6 +31,8 @@ class Dbh {
         }
     }
 
+
+    //SELECT
     public function select($query, $params = []) {
         if ($this->conn === null) {
             echo "ERROR: \$this->conn is null<br>";
@@ -43,6 +49,7 @@ class Dbh {
         }
     }
 
+    //INSERT
     //todo- check if i need to ignore item which is already exists in the table
     public function insert($table, $data) {
         $columns = implode(", ", array_keys($data));
@@ -53,6 +60,7 @@ class Dbh {
         return $stmt->execute($data);
     }
 
+    //UPDATE
     //todo- throw exception if the item is not exists in the table
     public function update($table, $data, $where) {
         $set = implode(", ", array_map(fn($k) => "$k = :$k", array_keys($data)));
@@ -61,6 +69,7 @@ class Dbh {
         return $stmt->execute($data);
     }
 
+    //DELETE
     //todo- throw exception if the item is not exists in the table
     public function delete($table, $where, $params = []) {
         $query = "DELETE FROM $table WHERE $where";

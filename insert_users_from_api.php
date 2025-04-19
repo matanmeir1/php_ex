@@ -23,7 +23,7 @@ foreach ($users as $user)
         'name' => $user['name'],
         'email' => $user['email'],
         'is_active' => 1,
-        'birth_date' => date('Y-m-d', strtotime('-' . rand(20, 40) . ' years')) // random birthday for question 6
+        'birth_date' => date('Y-m-d', strtotime('-' . rand(20, 40) . ' years')) // Random birthday for question 6
     ];
 
     try {

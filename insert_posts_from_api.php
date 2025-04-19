@@ -18,12 +18,18 @@ if (!$posts) {
 // Insert the data into the database
 foreach ($posts as $post) 
 {
+    $daysAgo = rand(0, 30);
+    $hour = rand(0, 23);
+    $minute = rand(0, 59);
+    $timestamp = mktime($hour, $minute, 0, date('m'), date('d') - $daysAgo, date('Y'));
+
+
     $data = [
         'id' => $post['id'],
         'user_id' => $post['userId'],
         'title' => $post['title'],
         'body' => $post['body'],
-        'created_at' => date('Y-m-d H:i:s', strtotime('-' . rand(0, 30) . ' days')), // random created date
+        'created_at' => date('Y-m-d H:i:s', $timestamp), // Random created date
         'is_active' => 1
     ];
 
