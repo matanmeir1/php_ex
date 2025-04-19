@@ -1,5 +1,5 @@
 <?php
-include 'database.php';
+include 'classes/database.php';
 
 $db = new Dbh();
 

@@ -1,11 +1,14 @@
 <?php
 
 require_once 'classes/Post.php';
+require_once 'classes/Logger.php';
 
-// The method to fetch the data
-$results = Post::getBirthdayFeed();
-
-
+try {
+    $results = Post::getBirthdayFeed();
+} catch (Exception $e) {
+    Logger::logMessage("Error loading birthday feed: " . $e->getMessage());
+    $results = [];
+}
 ?>
 
 <!DOCTYPE html>
@@ -24,30 +27,32 @@ $results = Post::getBirthdayFeed();
 </head>
 <body>
 
-<h1>Birthday Users last post</h1>
+<h1>Birthday Users Last Post</h1>
 
 <?php
-$currentUser = null;
+if (empty($results)) {
+    echo "<p>No results found.</p>";
+} else {
+    $currentUser = null;
 
+    foreach ($results as $row) {
+        if ($currentUser !== $row['user_id']) {
+            if ($currentUser !== null) echo "</div>"; // Close previous user div
+            $currentUser = $row['user_id'];
+            echo "<div class='user'>";
+            echo "<img src='images/image.jpg' class='image' alt='image'> ";
+            echo "<strong>" . htmlspecialchars($row['user_name']) . "</strong> (" . htmlspecialchars($row['email']) . ")<br>";
+        }
 
-// Loop through the results and display them
-foreach ($results as $row) {
-    if ($currentUser !== $row['user_id']) {
-        if ($currentUser !== null) echo "</div>"; // Close previous user div
-        $currentUser = $row['user_id'];
-        echo "<div class='user'>";
-        echo "<img src='images/image.jpg' class='image' alt='image'> ";
-        echo "<strong>{$row['name']}</strong> ({$row['email']})<br>";
+        echo "<div class='post'>";
+        echo "<div class='title'>" . htmlspecialchars($row['title']) . "</div>";
+        echo "<div class='date'>" . htmlspecialchars($row['created_at']) . "</div>";
+        echo "<p>" . nl2br(htmlspecialchars($row['body'])) . "</p>";
+        echo "</div>";
     }
 
-    echo "<div class='post'>";
-    echo "<div class='title'>{$row['title']}</div>";
-    echo "<div class='date'>{$row['created_at']}</div>";
-    echo "<p>{$row['body']}</p>";
-    echo "</div>";
+    if ($currentUser !== null) echo "</div>";
 }
-
-if ($currentUser !== null) echo "</div>";
 ?>
 
 </body>

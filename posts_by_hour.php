@@ -1,9 +1,20 @@
 <?php
 
 require_once 'classes/Post.php';
+require_once 'classes/Logger.php';
 
 // The method to fetch the data
-$results = Post::getGroupedByHour();
+try {
+    $results = Post::getGroupedByHour();
+
+    if (empty($results)) {
+        Logger::logMessage("No grouped post data found.");
+    }
+
+} catch (Exception $e) {
+    Logger::logMessage("Error fetching posts by hour: " . $e->getMessage());
+    $results = [];
+}
 ?>
 
 <!DOCTYPE html>
@@ -29,13 +40,15 @@ $results = Post::getGroupedByHour();
         <th>Posts by hour</th>
     </tr>
 
-    <?php foreach ($results as $row): ?>
-        <tr>
-            <td><?= $row['post_date'] ?></td>
-            <td><?= str_pad($row['post_hour'], 2, "0", STR_PAD_LEFT) ?>:00</td>
-            <td><?= $row['post_count'] ?></td>
-        </tr>
-    <?php endforeach; ?>
+    <?php
+    foreach ($results as $row) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['post_date']) . "</td>";
+        echo "<td>" . str_pad($row['post_hour'], 2, "0", STR_PAD_LEFT) . ":00</td>";
+        echo "<td>" . htmlspecialchars($row['post_count']) . "</td>";
+        echo "</tr>";
+    }
+    ?>
 </table>
 
 </body>

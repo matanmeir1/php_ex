@@ -2,9 +2,14 @@
 
 require_once 'classes/User.php';
 require_once 'classes/Post.php';
+require_once 'classes/Logger.php';
 
-$users = User::getAllWithPosts();
-
+try {
+    $users = User::getAllWithPosts();
+} catch (Exception $e) {
+    Logger::logMessage("Error loading user feed: " . $e->getMessage());
+    $users = [];
+}
 ?>
 
 <!DOCTYPE html>
@@ -26,29 +31,25 @@ $users = User::getAllWithPosts();
 <h1>Users Feed</h1>
 
 <?php
-$currentUser = null;
+if (empty($users)) {
+    Logger::logMessage("No users or posts found.");
+} else {
+    foreach ($users as $user) {
+        echo "<div class='user'>";
+        echo "<img src='images/image.jpg' class='image' alt='image'> ";
+        echo "<strong>" . htmlspecialchars($user->name) . "</strong> (" . htmlspecialchars($user->email) . ")<br>";
 
+        foreach ($user->posts as $post) {
+            echo "<div class='post'>";
+            echo "<div class='title'>" . htmlspecialchars($post->title) . "</div>";
+            echo "<div class='date'>" . htmlspecialchars($post->created_at) . "</div>";
+            echo "<p>" . nl2br(htmlspecialchars($post->body)) . "</p>";
+            echo "</div>";
+        }
 
-// Loop through the results and display them
-// Group posts by user
-foreach ($users as $user) 
-{
-    echo "<div class='user'>";
-    echo "<img src='images/image.jpg' class='image' alt='image'> ";
-    echo "<strong>{$user->name}</strong> ({$user->email})<br>";
-
-    foreach ($user->posts as $post) {
-        echo "<div class='post'>";
-        echo "<div class='title'>{$post->title}</div>";
-        echo "<div class='date'>{$post->created_at}</div>";
-        echo "<p>{$post->body}</p>";
         echo "</div>";
     }
-
-    echo "</div>";
 }
-
-if ($currentUser !== null) echo "</div>";
 ?>
 
 </body>

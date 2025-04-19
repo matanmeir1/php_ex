@@ -1,12 +1,25 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 
-require_once 'database.php';
 
-$db = new Dbh();
-$conn = $db->connect();
+
+require_once 'classes/database.php';
+require_once 'classes/Logger.php';
+
+// Initialize the database connection
+try {
+    $db = new Dbh();
+    $conn = $db->connect();
+} catch (Exception $e) {
+    Logger::logMessage("Failed to connect to DB in create_tables.php: " . $e->getMessage());
+    exit;
+}
 
 // Create the users table
 try {
+    //SQL to create the users table
     $sqlUsers = "
         CREATE TABLE IF NOT EXISTS users (
             id INT PRIMARY KEY,
@@ -18,10 +31,14 @@ try {
     ";
 
     $conn->exec($sqlUsers);
-    echo "Table 'users' created successfully.<br>";
+    Logger::logMessage("Table 'users' created successfully.");
+} catch (PDOException $e) {
+    Logger::logMessage("Error creating table 'users': " . $e->getMessage());
+}
 
-
-    // Create the posts table
+// Create the posts table
+try {
+    //SQL to create the posts table
     $sqlPosts = "
         CREATE TABLE IF NOT EXISTS posts (
             id INT PRIMARY KEY,
@@ -35,8 +52,7 @@ try {
     ";
 
     $conn->exec($sqlPosts);
-    echo "Table 'posts' created successfully.<br>";
-
+    Logger::logMessage("Table 'posts' created successfully.");
 } catch (PDOException $e) {
-    echo "Error creating tables: " . $e->getMessage();
+    Logger::logMessage("Error creating table 'posts': " . $e->getMessage());
 }
