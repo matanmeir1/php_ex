@@ -1,5 +1,8 @@
 <?php
 
+// Displays a full feed of all active users and their posts.
+
+
 require_once 'classes/User.php';
 require_once 'classes/Post.php';
 require_once 'classes/Logger.php';
@@ -30,10 +33,13 @@ try {
 
 <h1>Users Feed</h1>
 
+<a class="button" href="homepage.php">Back to Homapage</a><br>
+
 <?php
 if (empty($users)) {
     Logger::logMessage("No users or posts found.");
 } else {
+    // Display each user and their posts
     foreach ($users as $user) {
         echo "<div class='user'>";
         echo "<img src='images/image.jpg' class='image' alt='image'> ";
@@ -51,6 +57,8 @@ if (empty($users)) {
     }
 }
 ?>
+<a class="button" href="homepage.php">Back to Homapage</a><br>
+
 
 </body>
 </html>

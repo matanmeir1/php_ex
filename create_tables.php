@@ -1,11 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// Initializes the database structure by creating the required tables
 
 
-
-require_once 'classes/database.php';
+require_once 'config.php';
+require_once 'classes/Database.php';
 require_once 'classes/Logger.php';
 
 // Initialize the database connection

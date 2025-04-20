@@ -1,8 +1,7 @@
 <?php
-
+// Database connection and query abstraction layer.
 
 require_once __DIR__ . '/Logger.php';
-
 
 class Dbh 
 {
@@ -176,8 +175,4 @@ class Dbh
     }
     }
 
-
-
-
-    // todo - write to log func
 }

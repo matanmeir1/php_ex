@@ -1,6 +1,9 @@
 <?php
 
 
+// Imports user data from a remote API and inserts it into the database.
+
+require_once 'config.php';
 require_once 'classes/User.php';
 require_once 'classes/Logger.php';
 require_once 'classes/ApiHelper.php';

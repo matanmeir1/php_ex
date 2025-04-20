@@ -1,11 +1,9 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+
+//Imports posts data from a remote API and inserts it into the database.
 
 
-
-
+require_once 'config.php';
 require_once 'classes/Post.php';
 require_once 'classes/Logger.php';
 require_once 'classes/ApiHelper.php';
@@ -18,7 +16,7 @@ try {
     Logger::logMessage("Error fetching posts from API: " . $e->getMessage());
     exit;
 }
-
+    // Loop and insert
     foreach ($posts as $post) {
         // Create a random timestamp
         $daysAgo = rand(0, 30);

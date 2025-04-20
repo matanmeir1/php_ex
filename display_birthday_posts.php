@@ -1,4 +1,7 @@
 <?php
+// Displays the latest post from each active user whose birthday is this month.
+
+
 
 require_once 'classes/Post.php';
 require_once 'classes/Logger.php';
@@ -29,12 +32,15 @@ try {
 
 <h1>Birthday Users Last Post</h1>
 
+<a class="button" href="homepage.php">Back to Homapage</a><br>
+
 <?php
 if (empty($results)) {
     echo "<p>No results found.</p>";
 } else {
     $currentUser = null;
 
+    // Group posts by user
     foreach ($results as $row) {
         if ($currentUser !== $row['user_id']) {
             if ($currentUser !== null) echo "</div>"; // Close previous user div
@@ -54,6 +60,7 @@ if (empty($results)) {
     if ($currentUser !== null) echo "</div>";
 }
 ?>
+<a class="button" href="homepage.php">Back to Homapage</a><br>
 
 </body>
 </html>

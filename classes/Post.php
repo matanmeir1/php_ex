@@ -1,8 +1,8 @@
 <?php
+// Class: Post
 
-require_once __DIR__ . '/database.php';
+require_once __DIR__ . '/Database.php';
 require_once __DIR__ . '/Logger.php';
-
 
 
 class Post {
@@ -15,6 +15,7 @@ class Post {
 
     private $db;
 
+    // Constructor
     public function __construct($data = []) {
         try {
             $this->db = new Dbh();
@@ -31,6 +32,7 @@ class Post {
     }
     
 
+    // Method to save the post to the database (using insert)
     public function save() {
         $data = [
             'id' => $this->id,
@@ -52,6 +54,7 @@ class Post {
         }
     }
 
+    // Method to get all posts from database (using select)
     public static function getAll() {
         try {
             $db = new Dbh();
@@ -72,6 +75,7 @@ class Post {
 
 
 
+    // Method to get posts by user ID(using select)
     public static function getByUserId($user_id) {
         try {
             $db = new Dbh();
@@ -93,7 +97,7 @@ class Post {
     }
     
 
-
+    // Method to get posts by date (using select)
     public static function getGroupedByHour() {
         try {
             $db = new Dbh();
@@ -115,6 +119,7 @@ class Post {
     
     
 
+    // Method to get posts for birthday feed (using select)
     public static function getBirthdayFeed() {
         try {
             $db = new Dbh();

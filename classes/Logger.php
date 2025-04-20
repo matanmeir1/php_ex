@@ -1,5 +1,6 @@
 <?php
 
+// Simple logging utility for writing messages to a log file
 class Logger 
 {
     public static function logMessage($message, $print = false) {

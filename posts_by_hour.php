@@ -1,4 +1,5 @@
 <?php
+// Displays a table summarizing post activity by date and hour
 
 require_once 'classes/Post.php';
 require_once 'classes/Logger.php';
@@ -33,6 +34,8 @@ try {
 
 <h2 style="text-align: center;">Posts by hour</h2>
 
+<a class="button" href="homepage.php">Back to Homapage</a><br>
+
 <table>
     <tr>
         <th>Date</th>
@@ -50,6 +53,9 @@ try {
     }
     ?>
 </table>
+
+<a class="button" href="homepage.php">Back to Homapage</a><br>
+
 
 </body>
 </html>
