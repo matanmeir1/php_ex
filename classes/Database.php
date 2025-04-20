@@ -87,7 +87,7 @@ class Dbh
             Logger::logMessage("Failed to insert into $table: " . json_encode($data));
             throw new Exception("Failed to insert into $table.");
         } else {
-            Logger::logMessage("✅ Inserted into $table: " . json_encode($data));
+            Logger::logMessage("Inserted into $table: " . json_encode($data));
         }
 
         return $success;
